@@ -30,9 +30,13 @@ io.on('connection', (socket) => {
     else{
         socket.emit('player-joined', 'Spectating');
     }
+
+    socket.on('user-made-move', (info)=>{
+        io.emit('update-game', info);
+    });
     
 
-
+    // when a player leaves
     socket.on('disconnect', () =>{
         console.log('A user disconnected: ', socket.id);
         players.splice(players.indexOf(socket.id), 1);

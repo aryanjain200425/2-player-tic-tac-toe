@@ -16,17 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     socket.on('update-game', (info) =>{
-        console.log("UPDATING IFNORMALK");
+        if (currentPlayer ==="X"){
+            currentPlayer = "O";
+        }
+        else{
+            currentPlayer = "X";
+        }
+        
         cells[info.index].textContent = info.symbol;
     });
 
     function handleCellClick(event) {
-        console.log("CLICKED");
         const clickedCell = event.target;
         const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
         if (board[clickedCellIndex] !== '' || !gameActive || mySymbol !== currentPlayer) {
-            console.log("HIIIHIHIH");
             return;
         }
 

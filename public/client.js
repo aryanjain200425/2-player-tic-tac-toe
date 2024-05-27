@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlayerMessage.textContent = `Current player is ${currentPlayer}`
         cells[info.index].textContent = info.symbol;
         board[info.index] = info.symbol;
+
+        checkGameOver();
     });
 
     function handleCellClick(event) {
@@ -41,6 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    function checkGameOver(){
+        console.log("CHEKiNG IF WINNrf");
+        const winningConditions = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+        winningConditions.forEach(element => {
+            let first = board[element[0]];
+            let second = board[element[1]];
+            let third = board[element[2]];
+
+            if((first === second && first === third) && first !== '' && second !== '' && third !== ''){
+                gameActive = false;
+                currentPlayerMessage.textContent = `The winner is ${first}`;
+            }
+            
+        });
+    }
 
 
 

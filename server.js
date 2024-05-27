@@ -34,6 +34,10 @@ io.on('connection', (socket) => {
     socket.on('user-made-move', (info)=>{
         io.emit('update-game', info);
     });
+
+    socket.on('reset-game-pressed', () =>{
+        io.emit('reset-game');
+    })
     
 
     // when a player leaves

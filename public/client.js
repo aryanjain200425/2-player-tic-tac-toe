@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentPlayerMessage = document.getElementById('current-player');
     const symbolMessage = document.getElementById('symbol');
+    const resetButton = document.getElementById('reset');
     const cells = document.querySelectorAll('.cell');
 
     const socket = io();
@@ -31,6 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
         checkGameOver();
     });
 
+
+    socket.on('reset-game', () => {
+        board = ['','','','','','','','',''];
+        cells.forEach(cell => cell.textContent='');
+        gameActive = true;
+        currentPlayer = 'X';
+        currentPlayerMessage.textContent = `Current player is ${currentPlayer}`;
+    });
+
     function handleCellClick(event) {
         const clickedCell = event.target;
         const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
@@ -41,6 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         socket.emit('user-made-move', { index: clickedCellIndex, symbol: mySymbol });
     }
+
+    function resetGame(){
+        socket.emit('reset-game-pressed');
+    };
+
+
+
 
 
     function checkGameOver(){
@@ -63,6 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-
+    resetButton.addEventListener('click', resetGame);
 
 });

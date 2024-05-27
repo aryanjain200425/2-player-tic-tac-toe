@@ -22,10 +22,10 @@ io.on('connection', (socket) => {
     players.push(socket.id)
 
     if(players.length === 1){
-        socket.emit('player-joined', 'X');
+        socket.emit('player-joined', 'X', 1);
     }
     else if(players.length == 2){
-        socket.emit('player-joined', 'O');
+        socket.emit('player-joined', 'O', 2);
     }
     else{
         socket.emit('player-joined', 'Spectating');
@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
 
     socket.on('reset-game-pressed', () =>{
         io.emit('reset-game');
+    })
+
+    socket.on('start-the-game', ()=> {
+        io.emit('starting-game');
     })
     
 

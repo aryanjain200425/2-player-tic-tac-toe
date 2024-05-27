@@ -10,12 +10,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let mySymbol = '';
     let currentPlayer = 'X';
     let board = ['','','','','','','','','']
-    let gameActive = true;
+    let gameActive = false;
 
-    socket.on('player-joined', (symbol) =>{
+    socket.on('player-joined', (symbol, numPlayers) =>{
         mySymbol = symbol;
         symbolMessage.innerHTML = `Your symbol is ${symbol}`;
+        if(numPlayers === 1){
+            currentPlayerMessage.textContent = 'Waiting for opponent...';
+        }
+        else if (numPlayers === 2) {
+            socket.emit("start-the-game");
+        }
     });
+
+
+    socket.on("starting-game", () =>{
+        currentPlayerMessage.textContent = `Current player is ${currentPlayer}`;
+        gameActive = true;
+    })
 
     socket.on('update-game', (info) =>{
         if (currentPlayer ==="X"){

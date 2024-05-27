@@ -34,7 +34,7 @@ body {
     background-color: #e0e0e0;
 }
 
-#message {
+#current-player, #symbol {
     font-size: 1.2em;
     margin-bottom: 10px;
 }

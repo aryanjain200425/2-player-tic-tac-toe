@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const message = document.getElementById('message');
+    const currentPlayerMessage = document.getElementById('current-player');
+    const symbolMessage = document.getElementById('symbol');
     const cells = document.querySelectorAll('.cell');
 
     const socket = io();
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     socket.on('player-joined', (symbol) =>{
         mySymbol = symbol;
-        message.innerHTML = `Your symbol is ${symbol}`;
+        symbolMessage.innerHTML = `Your symbol is ${symbol}`;
     });
 
     socket.on('update-game', (info) =>{
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentPlayer = "X";
         }
 
+        currentPlayerMessage.textContent = `Current player is ${currentPlayer}`
         cells[info.index].textContent = info.symbol;
         board[info.index] = info.symbol;
     });

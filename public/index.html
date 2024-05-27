@@ -8,6 +8,7 @@
 </head>
 <body>
     <div id="game">
+        <div id="symbol"></div>
         <div id="board">
             <div class="cell" data-index="0"></div>
             <div class="cell" data-index="1"></div>
@@ -19,7 +20,7 @@
             <div class="cell" data-index="7"></div>
             <div class="cell" data-index="8"></div>
         </div>
-        <div id="message"></div>
+        <div id="current-player"></div>
         <button id="reset">Reset Game</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>

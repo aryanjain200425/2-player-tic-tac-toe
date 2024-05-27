@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
         else{
             currentPlayer = "X";
         }
-        
+
         cells[info.index].textContent = info.symbol;
+        board[info.index] = info.symbol;
     });
 
     function handleCellClick(event) {

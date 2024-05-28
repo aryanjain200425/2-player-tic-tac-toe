@@ -12,15 +12,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let board = ['','','','','','','','','']
     let gameActive = false;
 
-    socket.on('player-joined', (symbol, numPlayers) =>{
+
+    function settingPlayer(symbol, numPlayers){
         mySymbol = symbol;
         symbolMessage.innerHTML = `Your symbol is ${symbol}`;
         if(numPlayers === 1){
             currentPlayerMessage.textContent = 'Waiting for opponent...';
         }
-        else if (numPlayers === 2) {
+        else if (numPlayers >= 2) {
             socket.emit("start-the-game");
         }
+    }
+    socket.on('player-joined', (symbol, numPlayers) =>{
+        settingPlayer( symbol, numPlayers);
+    });
+
+    socket.on('player-left',(symbol, numPlayers) =>{
+        resetGame();
+        settingPlayer(symbol, numPlayers);
     });
 
 
@@ -45,12 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    socket.on('reset-game', () => {
+    socket.on('reset-game', (numPlayer) => {
         board = ['','','','','','','','',''];
         cells.forEach(cell => cell.textContent='');
-        gameActive = true;
+        
         currentPlayer = 'X';
-        currentPlayerMessage.textContent = `Current player is ${currentPlayer}`;
+        if(numPlayer >=2 ){
+            gameActive = true;
+            currentPlayerMessage.textContent = `Current player is ${currentPlayer}`;
+        }
+        else{
+            gameActive = false;
+            currentPlayerMessage.textContent = `waiting for opponenet...`;
+        }
+        
     });
 
     function handleCellClick(event) {

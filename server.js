@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('reset-game-pressed', () =>{
-        io.emit('reset-game');
+        io.emit('reset-game', players.length);
     })
 
     socket.on('start-the-game', ()=> {
@@ -47,7 +47,28 @@ io.on('connection', (socket) => {
     // when a player leaves
     socket.on('disconnect', () =>{
         console.log('A user disconnected: ', socket.id);
-        players.splice(players.indexOf(socket.id), 1);
+
+        let index = players.indexOf(socket.id);
+
+        players.splice(index, 1);
+
+        //Player X leaves
+        if (index === 0){
+            io.to(players[0]).emit('player-left', 'X', players.length);
+            if(players.length >= 2){
+                io.to(players[1]).emit('player-left', 'O', players.length);
+            }
+        }
+        //Player O leaves
+        if (index === 1){
+            if(players.length >= 2){
+                io.to(players[1]).emit('player-left', 'O', players.length);
+            }
+            else{
+                io.to(players[0]).emit('player-left', 'X', players.length);
+            }
+            
+        }
 
     });
 
